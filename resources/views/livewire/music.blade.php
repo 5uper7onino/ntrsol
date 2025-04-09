@@ -17,6 +17,7 @@
                     <td class="px-6 py-4">{{ $song->album }}</td>
                     <td class="px-6 py-4">{{ $song->genre }}</td>
                     <td class="px-6 py-4 text-center">
+                        sdfgsdfg
                         <button
                             wire:click="play('{{ $song->file_path }}')"
                             class="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold rounded-md transition duration-300">

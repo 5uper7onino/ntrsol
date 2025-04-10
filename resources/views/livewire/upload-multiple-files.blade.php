@@ -3,10 +3,22 @@
         Subir muchas canciónes
     </button>
 
+
+
     @if($open)
         <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div class="bg-white p-6 rounded-lg shadow w-full max-w-md">
                 <h2 class="text-lg font-bold mb-4">Subir nueva canción</h2>
+
+                @if ($errors->any())
+                    <div class="bg-red-100 text-red-700 p-4 mb-4 rounded">
+                        <ul class="list-disc pl-5">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
                 <div class="mb-4">
                     <label for="songFiles" class="block">Archivo MP3</label>

@@ -26,21 +26,6 @@ class="space-y-4 h-full w-full"
                 <source src="{{ $song }}" type="audio/mp3">
                 Tu navegador no soporta el elemento de audio.
             </audio>
-
-            <!-- Barra de progreso -->
-            <div x-show="isUploading" class="w-full bg-gray-200 rounded h-4 overflow-hidden">
-                <div class="bg-blue-500 h-full transition-all duration-300" :style="'width: ' + progress + '%'"></div>
-            </div>
-
-
-            <!-- Subir nueva canción -->
-            <div class="mt-6">
-                <input type="file" wire:model="song" accept="audio/mp3" class="mb-2" />
-                @error('song') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                <button wire:click="uploadSong" class="bg-blue-500 text-white px-4 py-2 rounded-lg mt-2">
-                    Subir canción
-                </button>
-            </div>
         </div>
     </div>
 </div>

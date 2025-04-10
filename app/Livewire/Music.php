@@ -8,10 +8,18 @@ use App\Models\Song;
 class Music extends Component
 {
     public $songs;
+    
+    protected $listeners = [
+        "uploadedSong" => "mount",
+    ];
 
     public function mount()
     {
-        $this->songs = Song::all();  // Carga todos los usuarios
+        $this->loadSongs();  // Carga todos los usuarios
+    }
+
+    public function loadSongs(){
+        $this->songs = Song::all();
     }
 
     public function play($path)

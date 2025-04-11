@@ -22,9 +22,10 @@ class="space-y-4 h-full w-full"
 
 
             <!-- Reproductor de audio -->
-            <audio id="audioPlayer" controls class="mt-2 w-[50%] sticky bottom-0">
+            wertewrtewrtewrtrewtertyretyrty
+            <audio id="audioPlayer" controls class="mt-2 w-[50%] sticky bottom-0" preload="auto">
                 <source src="{{ $this->currentSong }}" type="audio/mp3">
-                Tu navegador no soporta el elemento de audio.
+                Tu navegador no soporta el elemento de audio.sdfgdsfgwerwerewr
             </audio>
         </div>
     </div>
@@ -41,7 +42,15 @@ const audio = document.getElementById('audioPlayer');
 
     audio.addEventListener('ended', () => {
         alert("se acabó la cancion");
-            Livewire.dispatch('playNext');
+            //Livewire.dispatch('playNext');
         });
+
+        audio.addEventListener('seeking', () => {
+  console.log('🔄 Buscando nueva posición...');
+});
+
+audio.addEventListener('seeked', () => {
+  console.log('✅ Nueva posición alcanzada:', audio.currentTime);
+});
 
 </script>

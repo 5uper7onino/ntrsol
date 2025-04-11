@@ -2,29 +2,48 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Song;
-use getID3;
-
 
 class Player extends Component
 {
-
-
-    public $song;
+    public $playlist = []; // Cola de canciones
+    public $currentIndex = 0; // Índice de la canción actual
 
     protected $listeners = [
         'playSong' => 'playSong',
+        'addToQueue' => 'addToQueue',
+        'playNext' => 'playNext'
     ];
-
-    public function playSong($path){
-        $this->song = $path;
-        $this->dispatch('play-new-song');
-    }
 
     public function mount()
     {
-        // Canción predeterminada, puedes cambiar la ruta al archivo que prefieras
-        $this->song = '/storage/songs/song.mp3'; // Ruta de tu canción predeterminada
+        // Canción predeterminada
+        $this->playlist = ['/storage/songs/song.mp3'];
+        $this->currentIndex = 0;
+    }
+
+    public function getCurrentSongProperty()
+    {
+        return $this->playlist[$this->currentIndex] ?? null;
+    }
+
+    public function playSong($path)
+    {
+        $this->playlist = [$path]; // Reemplaza la cola
+        $this->currentIndex = 0;
+        $this->dispatch('play-new-song');
+    }
+
+    public function addToQueue($path)
+    {
+        $this->playlist[] = $path;
+    }
+
+    public function playNext()
+    {
+        if ($this->currentIndex + 1 < count($this->playlist)) {
+            $this->currentIndex++;
+            $this->dispatch('play-new-song');
+        }
     }
 
     public function render()

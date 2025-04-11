@@ -23,17 +23,25 @@ class="space-y-4 h-full w-full"
 
             <!-- Reproductor de audio -->
             <audio id="audioPlayer" controls class="mt-2 w-[50%] sticky bottom-0">
-                <source src="{{ $song }}" type="audio/mp3">
+                <source src="{{ $this->currentSong }}" type="audio/mp3">
                 Tu navegador no soporta el elemento de audio.
             </audio>
         </div>
     </div>
 </div>
 <script>
+
+const audio = document.getElementById('audioPlayer');
+
     window.addEventListener('play-new-song', () => {
-        const audio = document.getElementById('audioPlayer');
         // Para forzar recarga del source
         audio.load();
         audio.play();
     });
+
+    audio.addEventListener('ended', () => {
+        alert("se acabó la cancion");
+            Livewire.dispatch('playNext');
+        });
+
 </script>

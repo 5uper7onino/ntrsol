@@ -5,27 +5,54 @@
         x-data="{ open: false }"
         x-on:toggle-mobile-menu.window="open = !open"
         x-bind:class="{ 'block': open, 'hidden': !open }"
-        class="bg-gray-100 dark:bg-gray-900 w-64 p-4 border-r border-gray-200 dark:border-gray-700 lg:block hidden">
+        class="bg-gray-100 dark:bg-gray-900 w-64 py-4 border-r border-gray-200 dark:border-gray-700 lg:block hidden">
 
         <!-- Logo -->
         <div class="mb-8">
-            <img src="{{asset('logos/Rk2.png')}}" alt="Logo" class="w-32 mx-auto">
+            <img src="{{asset('logos/nutrisol30.svg')}}" alt="Logo" class="w-32 mx-auto">
         </div>
 
         <!-- Menu -->
         <nav class="space-y-2 text-gray-700 dark:text-gray-200">
-            <button wire:click="setPage('home')" class="w-full text-left px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded">
-                Inicio
+            <li class="h-64 bg-slate-100 dark:bg-gray-600 m-4 p-3 mb-3 rounded-3xl flex flex-col items-center justify-center text-center">
+                <img src="{{ asset('images/pic.jpg') }}" alt="Foto de perfil" class="w-32 h-48 rounded-full object-cover mb-2">
+                <span class="text font-300">¡Hola {{ Auth::user()->name }}!</span>
+            </li>
+
+            <button wire:click="setPage('home')" class="w-full text-left px-4 py-2 rounded flex items-center space-x-2 hover:bg-gray-200 dark:hover:bg-gray-800">
+                <i class="fa-solid fa-house text-gray-600 dark:text-gray-300 w-5"></i>
+                <span class="text-gray-800 dark:text-gray-100">Inicio</span>
             </button>
-            <button wire:click="setPage('users')" class="w-full text-left px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded">
-                Usuarios
+
+            <x-dropdown2 align="right" width="48" contentClasses="py-1 bg-gray-100" dropdownClasses="bg-white">
+                <!-- Trigger -->
+                <x-slot name="triggerLabel">
+                        <span class="text-gray-800 dark:text-gray-100">Registros</span>
+                </x-slot>
+                <!-- Dropdown Content -->
+                <x-slot name="content">
+                    <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-200" onclick="Livewire.dispatch('openRegisterModal')">Primera vez</a>
+                    <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-200" wire:click="setPage('Pacientes')">En tratamiento</a>
+                </x-slot>
+            </x-dropdown2>
+
+            <button wire:click="setPage('Agenda')" class="w-full text-left px-4 py-2 rounded flex items-center space-x-2 hover:bg-gray-200 dark:hover:bg-gray-800">
+                <i class="fa-solid fa-address-book text-gray-600 dark:text-gray-300 w-5"></i>
+                <span class="text-gray-800 dark:text-gray-100">Agenda</span>
             </button>
-            <button wire:click="setPage('music')" class="w-full text-left px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded">
-                Música
-            </button>
-            <button wire:click="setPage('settings')" class="w-full text-left px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded">
-                Configuración
-            </button>
+
+            <x-dropdown2 align="right" width="48" contentClasses="py-1 bg-gray-100" dropdownClasses="bg-white">
+                <!-- Trigger -->
+                <x-slot name="triggerLabel">
+                        <span class="text-gray-800 dark:text-gray-100">Configuración</span>
+                </x-slot>
+            
+                <!-- Dropdown Content -->
+                <x-slot name="content">
+                    <a href="#" id="themeToggler" class="block px-4 py-2 text-gray-700 hover:bg-gray-200" onclick="toggleDarkMode(this);">Modo Oscuro</a>
+                </x-slot>
+            </x-dropdown2>
+
         </nav>
     </aside>
 
@@ -47,22 +74,55 @@
             </div>
         </header>
 
-        <!-- Main Section -->
-        <main class="flex-1 p-6 h-full overflow-y-auto bg-gray-50 dark:bg-gray-900">
-            @if ($currentPage === 'home')
+<!-- Main Section -->
+<div 
+    key="{{ $currentPage }}"
+    x-data="{ show: false }"
+    x-init="show = true"
+    x-show="show"
+    x-transition:enter="transition ease-out duration-500"
+    x-transition:enter-start="opacity-0 translate-y-4"
+    x-transition:enter-end="opacity-100 translate-y-0"
+    class="transition-all p-4"
+>
+    @if ($currentPage === 'home')
+        <div class="text-gray-700 dark:text-gray-200">Inicio</div>
+        <div id="calendar" wire:ignore></div>
 
-            @elseif ($currentPage === 'settings')
-                @livewire('settings')
-            @elseif ($currentPage === 'users')
-                @livewire('users')
-            @elseif ($currentPage === 'music')
-                @livewire('music')
-            @endif
-        </main>
+ 
+    @elseif ($currentPage === 'Agenda')
+        @livewire('agenda')
+    @elseif ($currentPage === 'Pacientes')
+        @livewire('users')
+    @elseif ($currentPage === 'music')
+        @livewire('music')
+    @endif
+</div>
 
-        <!-- Reproductor Fijo Abajo -->
-        <div class="w-full fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-300 dark:border-gray-700 shadow z-50 px-4 py-3 flex items-center justify-between">
-            @livewire('player')
-        </div>
+
+
+        <livewire:register-patient />
+
     </div>
 </div>
+<script>
+  function toggleDarkMode() {
+    const html = document.documentElement;
+    const isDark = html.classList.contains('dark');
+    let themeBtn = document.querySelector('#themeToggler');
+    if (isDark) {
+      html.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+      themeBtn.innerHTML = "Modo Oscuro";
+
+    } else {
+      html.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+      themeBtn.innerHTML = "Modo Claro";
+    }
+    console.log();
+  }
+            Livewire.on('calendarLoaded', () => {
+                initializeCalendar(); // o tu lógica para cargarlo
+            });
+</script>

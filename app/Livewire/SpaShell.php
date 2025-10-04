@@ -11,6 +11,7 @@ class SpaShell extends Component
     public function setPage(string $page)
     {
         $this->currentPage = $page;
+        $this->dispatch('page-changed');
     }
 
     public function render()

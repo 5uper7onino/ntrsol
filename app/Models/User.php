@@ -28,6 +28,17 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'father_name',
+        'mother_name',
+        'phone_number',
+        'address',
+        'dob',
+        'gender',
+        'occupation',
+        'marital_status',
+        'referal_source',
+        'medical_history',
+        'emergency_contact',
         'password',
     ];
 
@@ -51,6 +62,16 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function familyMembers()
+    {
+        return $this->hasMany(FamilyMember::class);
+    }
+
+    public function companions()
+    {
+        return $this->hasMany(Companion::class);
+    }
 
     /**
      * Get the attributes that should be cast.

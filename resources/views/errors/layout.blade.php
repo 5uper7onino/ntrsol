@@ -5,52 +5,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>@yield('title')</title>
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 36px;
-                padding: 20px;
-            }
-        </style>
+        @vite('resources/css/app.css') {{-- si usas Tailwind con Vite --}}
     </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            <div class="content">
+    <body class="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
 
-                <div class="title">
-                    @yield('message')
-                </div>
-            <img src="{{asset('logos/nutrisol30.svg')}}" alt="Logo" width=500 height=auto class="w-64 mx-auto">
-
-            </div>
+        {{-- Mensaje principal --}}
+        <div class="text-center text-4xl font-bold mb-6">
+            @yield('message')
         </div>
+
+        {{-- Logo SVG centrado y a la mitad del ancho de la pantalla --}}
+        <img src="{{ asset('logos/nutrisol30.svg') }}" 
+             alt="Logo" 
+             class="w-3/4 max-w-md h-auto">
+
     </body>
 </html>

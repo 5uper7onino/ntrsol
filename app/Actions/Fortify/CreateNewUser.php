@@ -34,7 +34,7 @@ class CreateNewUser implements CreatesNewUsers
         'mother_name'   => 'test',
         'phone_number'  => '123123',
         'address'       => 'asfdsdfasdfas',
-        'dob'           => 'asdfasdfasdf',
+        'dob'           => '1980-08-27',
         'gender'        => 'asdfasdf',
         'occupation'    => 'asfdasdf',
         'marital_status'=> 'asfdsafsfd',

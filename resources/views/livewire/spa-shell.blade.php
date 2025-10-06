@@ -2,10 +2,14 @@
 
     <!-- Sidebar (Izquierda) -->
     <aside
-        x-data="{ open: false }"
-        x-on:toggle-mobile-menu.window="open = !open"
-        x-bind:class="{ 'block': open, 'hidden': !open }"
-        class="bg-gray-100 dark:bg-gray-900 w-64 py-4 border-r border-gray-200 dark:border-gray-700 lg:block hidden">
+    x-data="{ open: false }"
+    x-on:toggle-mobile-menu.window="open = !open"
+    x-bind:class="{
+        'translate-x-0 z-10': open,
+        '-translate-x-full z-0': !open
+    }"
+    class="fixed lg:static inset-y-0 left-0 w-64 h-screen bg-gray-100 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:z-auto">
+
 
         <!-- Logo -->
         <div class="mb-8">
@@ -50,7 +54,16 @@
                 <!-- Dropdown Content -->
                 <x-slot name="content">
                     <a href="#" id="themeToggler" class="block px-4 py-2 text-gray-700 hover:bg-gray-200" onclick="toggleDarkMode(this);">Modo Oscuro</a>
+                    <form method="POST" action="{{ route('logout') }}" x-data>
+                        @csrf
+
+                        <x-dropdown-link href="{{ route('logout') }}"
+                                 @click.prevent="$root.submit();">
+                            {{ __('Log Out') }}
+                        </x-dropdown-link>
+                    </form>
                 </x-slot>
+                
             </x-dropdown2>
 
         </nav>
@@ -83,8 +96,9 @@
     x-transition:enter="transition ease-out duration-500"
     x-transition:enter-start="opacity-0 translate-y-4"
     x-transition:enter-end="opacity-100 translate-y-0"
-    class="transition-all p-4"
+    class="transition-all p-4 flex-1 flex flex-col lg:ml-64"
 >
+
     @if ($currentPage === 'home')
         <div class="text-gray-700 dark:text-gray-200">Inicio</div>
         <div id="calendar" wire:ignore></div>
